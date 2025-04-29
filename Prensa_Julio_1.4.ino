@@ -3,7 +3,7 @@
 #define pstExpulsao 3
 #define snsrBatente 7
 #define botaoInicio 6
-#define potenciometro A1    //Isto talvez de erro
+#define potenciometro A0    //Isto talvez de erro
 #define filtroDebounce 200  //Isto define quanto tempo o botão deve ser segurado para registar a mudança
 
 int valPoten = 0;     //Esse é o valor do potenciometro
@@ -51,10 +51,12 @@ void loop() {
 
 void cicloDeAlimentacao() {
 
-  delay(delayMap);
   digitalWrite(pstAliment, LOW);  //O pistão ESTENDE no LOW
   delay(200);                     //Tempo para o pistão de alimentação estender totalmente
-  digitalWrite(pstAliment, HIGH);
+  if (digitalRead(snsrBatente)==HIGH){
+    digitalWrite(pstAliment, HIGH);
+    delay(delayMap);
+  }
 }
 
 void cicloDeFuro() {
@@ -63,7 +65,7 @@ void cicloDeFuro() {
   digitalWrite(pstAvanco, LOW);
   delay(400);                     //Esperar Furar
   digitalWrite(pstAvanco, HIGH);  //Levantar prensa e soltar batente
-  digitalWrite(pstAliment, LOW);
+  digitalWrite(pstAliment, HIGH);
   delay(200);
   digitalWrite(pstExpulsao, LOW);  //Espera,expulsa peça, espera, retrai pistão
   delay(200);
